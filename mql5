@@ -1,0 +1,112 @@
+
+//+------------------------------------------------------------------+
+//|                                            CT Omni Channel.mq5 |
+//|                        Copyright 2023, Forex Robot Easy Team    |
+//|                                      https://forexroboteasy.com |
+//+------------------------------------------------------------------+
+
+#property copyright 'Copyright 2023, Forex Robot Easy Team'
+#property link      'https://forexroboteasy.com'
+
+//+------------------------------------------------------------------+
+//| Custom indicator initialization function                         |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    //--- indicator buffers mapping
+    SetIndexBuffer(0, ExtMapBuffer1);
+    SetIndexBuffer(1, ExtMapBuffer2);
+
+    //--- indicator line
+    PlotIndexSetDouble(0, PLOT_EMPTY_VALUE, EMPTY_VALUE);
+    PlotIndexSetDouble(1, PLOT_EMPTY_VALUE, EMPTY_VALUE);
+
+    //--- indicator short name
+    IndicatorSetString(INDICATOR_SHORTNAME, 'CT Omni Channel');
+
+    return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Custom indicator iteration function                              |
+//+------------------------------------------------------------------+
+int OnCalculate(const int rates_total,
+                const int prev_calculated,
+                const datetime& time[],
+                const double& open[],
+                const double& high[],
+                const double& low[],
+                const double& close[],
+                const long& tick_volume[],
+                const long& volume[],
+                const int& spread[])
+{
+    //--- calculate indicator values
+    int limit = rates_total - prev_calculated;
+
+    // Loop through all bars
+    for(int i = 0; i < limit; i++)
+    {
+        // Calculate custom channel based on base type and range type
+        double channelTop = CalculateChannelTop(i, open, high, low, close);
+        double channelBottom = CalculateChannelBottom(i, open, high, low, close);
+
+        // Check for over-extensions or the beginning of new trends
+        if(close[i] > channelTop)
+        {
+            // Perform buy signal actions
+            PerformBuySignalActions();
+        }
+        else if(close[i] < channelBottom)
+        {
+            // Perform sell signal actions
+            PerformSellSignalActions();
+        }
+    }
+
+    return(rates_total);
+}
+
+//+------------------------------------------------------------------+
+//| Calculate channel top                                            |
+//+------------------------------------------------------------------+
+double CalculateChannelTop(const int index,
+                           const double& open[],
+                           const double& high[],
+                           const double& low[],
+                           const double& close[])
+{
+    // Implement logic to calculate channel top based on index and trading strategy
+    return high[index];
+}
+
+//+------------------------------------------------------------------+
+//| Calculate channel bottom                                         |
+//+------------------------------------------------------------------+
+double CalculateChannelBottom(const int index,
+                              const double& open[],
+                              const double& high[],
+                              const double& low[],
+                              const double& close[])
+{
+    // Implement logic to calculate channel bottom based on index and trading strategy
+    return low[index];
+}
+
+//+------------------------------------------------------------------+
+//| Perform buy signal actions                                        |
+//+------------------------------------------------------------------+
+void PerformBuySignalActions()
+{
+    // Implement logic for buy signal actions
+    // ...
+}
+
+//+------------------------------------------------------------------+
+//| Perform sell signal actions                                      |
+//+------------------------------------------------------------------+
+void PerformSellSignalActions()
+{
+    // Implement logic for sell signal actions
+    // ...
+}
